@@ -49,6 +49,17 @@
    - app `auditoria` contains models `Audit` e `Finding` (exemplos de campos e escolhas).
    - Use SQLite for local development; use env vars for secrets in production.
 
+### API (Django REST Framework)
+
+- The project exposes a minimal REST API using `djangorestframework` under `/api/`:
+   - `GET /api/audits/` — list audits
+   - `GET /api/audits/<id>/` — audit detail (includes nested `findings`)
+   - `GET /api/findings/` — list findings
+   - `GET /api/findings/<id>/` — finding detail
+- Serializer examples: `auditoria/serializers.py` (nested `FindingSerializer` in `AuditSerializer`).
+- ViewSets and router: `auditoria/api.py` and registered in `projeto_auditoria/urls.py` as `path('api/', ...)`.
+
+
 
 ## Examples of useful, repository-specific tasks an agent can propose or perform ✍️
 - If maintainers confirm this is a Python web app: propose creating `README.md` with setup steps, `requirements.txt` (or `pyproject.toml`), and a `tests/` folder with a tiny smoke test.

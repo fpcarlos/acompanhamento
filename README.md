@@ -16,6 +16,15 @@ Testes:
 
 - Rodar testes com pytest: `pytest -q` (veja `pytest.ini` para configuração do DJANGO_SETTINGS_MODULE).
 
+API:
+
+- Endpoints REST mínimos disponíveis:
+	- `GET /api/audits/` — lista auditorias
+	- `GET /api/audits/<id>/` — detalhe de uma auditoria (inclui `findings`)
+	- `GET /api/findings/` — lista de ocorrências
+	- `GET /api/findings/<id>/` — detalhe de uma ocorrência
+
+
 Notas:
 
 - Este é um esqueleto inicial; se desejar que eu adicione endpoints REST, autenticação por token, ou fixtures e migrations iniciais, me informe que eu adiciono em um próximo PR.
