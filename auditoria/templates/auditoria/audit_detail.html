@@ -1,15 +1,38 @@
 {% extends "base.html" %}
 
+{% block title %}{{ audit.title }} — Projeto Auditoria{% endblock %}
+
 {% block content %}
-  <h1>{{ audit.title }}</h1>
-  <p>Status: {{ audit.get_status_display }}</p>
-  <p>{{ audit.description }}</p>
-  <h2>Findings</h2>
-  <ul>
+  <div class="mb-3">
+    <h1 class="h4 mb-1">{{ audit.title }} <small class="text-muted">— {{ audit.get_status_display }}</small></h1>
+    <p class="text-muted mb-0">Criada em {{ audit.created_at|date:"Y-m-d H:i" }}</p>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <p class="card-text">{{ audit.description|linebreaks }}</p>
+    </div>
+  </div>
+
+  <h2 class="h5">Ocorrências</h2>
+  <div class="list-group">
     {% for f in audit.findings.all %}
-      <li>{{ f.title }} — {{ f.get_severity_display }} — {% if f.resolved %}Resolvido{% else %}Aberto{% endif %}</li>
+      <div class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-semibold">{{ f.title }}</div>
+          <div class="small text-muted">{{ f.description|truncatechars:140 }}</div>
+        </div>
+        <div class="text-end">
+          <span class="badge {% if f.severity == 'high' %}bg-danger{% elif f.severity == 'medium' %}bg-warning text-dark{% else %}bg-secondary{% endif %} me-2">{{ f.get_severity_display }}</span>
+          {% if f.resolved %}
+            <span class="badge bg-success">Resolvido</span>
+          {% else %}
+            <span class="badge bg-info text-dark">Aberto</span>
+          {% endif %}
+        </div>
+      </div>
     {% empty %}
-      <li>Nenhuma ocorrência registrada.</li>
+      <div class="alert alert-secondary">Nenhuma ocorrência registrada.</div>
     {% endfor %}
-  </ul>
+  </div>
 {% endblock %}
