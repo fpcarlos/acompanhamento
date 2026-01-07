@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Importar PAF{% endblock %}
+
+{% block content %}
+  <h1>Importar Plano Anual de Fiscalização</h1>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <p>Colunas esperadas (ordem flexível):</p>
+      <ul>
+        {% for c in required_columns %}
+          <li>{{ c }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      {{ form.file.label_tag }}
+      {{ form.file }}
+    </div>
+    <div class="mb-3 form-check">
+      {{ form.replace_existing }} {{ form.replace_existing.label_tag }}
+    </div>
+    <button class="btn btn-primary">Enviar</button>
+  </form>
+
+{% endblock %}

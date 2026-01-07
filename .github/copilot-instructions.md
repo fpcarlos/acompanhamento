@@ -59,6 +59,21 @@
 - Serializer examples: `auditoria/serializers.py` (nested `FindingSerializer` in `AuditSerializer`).
 - ViewSets and router: `auditoria/api.py` and registered in `projeto_auditoria/urls.py` as `path('api/', ...)`.
 
+### PAF (Plano Anual de Fiscalização)
+
+- New app `paf` implements PAF functionality. Key files:
+   - `paf/models.py` — `UnidadeTecnica`, `PAFAction`, `PAFImport`.
+   - `paf/admin.py` — admin registration for easy management.
+   - `paf/migrations/` — initial DB schema, applied locally.
+- Dependencies: `openpyxl` is added to `requirements.txt` to parse `.xlsx` files.
+
+Design notes for agents:
+
+- Use `PAFImport` to store uploaded files and track processing results (`summary` JSON field) and `uploaded_by` for audit.
+- Implement import flow: validate sheet columns and row-level constraints, collect per-line errors, process valid rows and persist errors into the `summary` of `PAFImport` for UX reporting.
+- When importing a PAF for a year where existing actions exist, prompt the user to either replace the full plan (if no action is in execution) or merge new actions while preserving existing ones (match by `codigo_acao`).
+
+
 
 
 ## Examples of useful, repository-specific tasks an agent can propose or perform ✍️
