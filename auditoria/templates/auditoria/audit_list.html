@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Auditorias</h1>
+  <ul>
+    {% for a in audits %}
+      <li><a href="{% url 'auditoria:audit-detail' a.pk %}">{{ a.title }}</a> — {{ a.get_status_display }}</li>
+    {% empty %}
+      <li>Nenhuma auditoria encontrada.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

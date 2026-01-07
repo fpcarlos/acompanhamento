@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ audit.title }}</h1>
+  <p>Status: {{ audit.get_status_display }}</p>
+  <p>{{ audit.description }}</p>
+  <h2>Findings</h2>
+  <ul>
+    {% for f in audit.findings.all %}
+      <li>{{ f.title }} — {{ f.get_severity_display }} — {% if f.resolved %}Resolvido{% else %}Aberto{% endif %}</li>
+    {% empty %}
+      <li>Nenhuma ocorrência registrada.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
