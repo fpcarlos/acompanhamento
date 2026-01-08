@@ -1,6 +1,8 @@
 import csv
 from openpyxl import load_workbook
 from io import TextIOWrapper
+import unicodedata
+import re
 
 REQUIRED_COLUMNS = [
     'Código da Ação',
@@ -13,6 +15,46 @@ REQUIRED_COLUMNS = [
     'Ano',
     'Status',
 ]
+
+
+def normalize_str(s: str) -> str:
+    if s is None:
+        return ''
+    s = str(s)
+    # remove accents
+    s = unicodedata.normalize('NFKD', s)
+    s = ''.join([c for c in s if not unicodedata.combining(c)])
+    s = s.lower()
+    # remove non-alphanumeric
+    s = re.sub(r'[^a-z0-9]', '', s)
+    return s
+
+
+CANONICAL_COLUMNS = {normalize_str(c): c for c in REQUIRED_COLUMNS}
+
+
+def map_headers(headers):
+    """Map given headers to canonical expected header names.
+
+    Returns (mapping, missing) where mapping is dict canonical -> actual header name and
+    missing is list of canonical names missing.
+    """
+    mapping = {}
+    norm_to_actual = {normalize_str(h): h for h in headers}
+    for canon_norm, canon_display in CANONICAL_COLUMNS.items():
+        if canon_norm in norm_to_actual:
+            mapping[canon_display] = norm_to_actual[canon_norm]
+        else:
+            # try partial match: any header whose normalized contains canon_norm
+            found = None
+            for nh, actual in norm_to_actual.items():
+                if canon_norm in nh:
+                    found = actual
+                    break
+            if found:
+                mapping[canon_display] = found
+    missing = [c for c in REQUIRED_COLUMNS if c not in mapping]
+    return mapping, missing
 
 
 def read_table_from_file(file_obj):
@@ -42,5 +84,7 @@ def read_table_from_file(file_obj):
 
 
 def validate_columns(headers):
-    missing = [c for c in REQUIRED_COLUMNS if c not in headers]
+    # Use mapping to allow flexible header names and order
+    mapping, missing = map_headers(list(headers))
     return missing
+

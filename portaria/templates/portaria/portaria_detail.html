@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Portaria {{ object.numero_portaria }}{% endblock %}
+
+{% block content %}
+<h1>Portaria {{ object.numero_portaria }}</h1>
+
+<dl class="row">
+  <dt class="col-sm-3">Tipo de Fiscalização</dt><dd class="col-sm-9">{{ object.tipo_fiscalizacao }}</dd>
+  <dt class="col-sm-3">Tipo de Portaria</dt><dd class="col-sm-9">{{ object.tipo_portaria }}</dd>
+  <dt class="col-sm-3">Processo SEI</dt><dd class="col-sm-9">{{ object.numero_processo_sei }} / {{ object.ano_processo_sei }}</dd>
+  <dt class="col-sm-3">Status</dt><dd class="col-sm-9">{{ object.status_portaria }}</dd>
+  <dt class="col-sm-3">Objetivo</dt><dd class="col-sm-9">{{ object.objetivo }}</dd>
+  <dt class="col-sm-3">Deliberação</dt><dd class="col-sm-9">{{ object.deliberacao }}</dd>
+  <dt class="col-sm-3">Entidades</dt><dd class="col-sm-9">{% for e in object.entidades.all %}{{ e }}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}</dd>
+</dl>
+
+<a class="btn btn-secondary" href="{% url 'portaria:portaria-list' %}">Voltar</a>
+
+{% endblock %}

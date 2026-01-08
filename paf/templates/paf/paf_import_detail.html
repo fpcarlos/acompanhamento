@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhe da Importação{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Importação: {{ import.file.name|basename }}</h1>
+    <div>
+      <a class="btn btn-sm btn-outline-secondary" href="{% url 'paf:paf-imports-list' %}">Voltar</a>
+      <a class="btn btn-sm btn-outline-primary" href="{{ import.file.url }}">Baixar arquivo</a>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <p><strong>Ano:</strong> {{ import.year }}</p>
+      <p><strong>Enviado por:</strong> {{ import.uploaded_by }}</p>
+      <p><strong>Data:</strong> {{ import.uploaded_at|date:'Y-m-d H:i' }}</p>
+      <p><strong>Processado:</strong> {% if import.processed %}Sim{% else %}Não{% endif %}</p>
+      <p><strong>Resumo:</strong> {{ summary.processed|default:0 }} processados</p>
+    </div>
+  </div>
+
+  <h2>Erros por linha</h2>
+  {% if errors %}
+    <div class="table-responsive">
+      <table class="table table-sm">
+        <thead>
+          <tr><th>Linha</th><th>Erro</th></tr>
+        </thead>
+        <tbody>
+          {% for e in errors %}
+            <tr><td>{{ e.line }}</td><td>{{ e.error }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-success">Nenhum erro reportado.</div>
+  {% endif %}
+
+{% endblock %}

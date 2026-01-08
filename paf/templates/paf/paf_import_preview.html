@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Pré-visualizar Importação{% endblock %}
+
+{% block content %}
+  <h1>Pré-visualizar Importação</h1>
+
+  <div class="mb-3">
+    <p><strong>Arquivo:</strong> {{ import.file.name }}</p>
+    <p><strong>Ano (estimado):</strong> {{ import.year }}</p>
+  </div>
+
+  <h2>Primeiras linhas (até 5)</h2>
+  <div class="table-responsive">
+    <table class="table table-sm table-striped">
+      <thead>
+        <tr>
+          {% for h in preview_rows.0.keys %}
+            <th>{{ h }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in preview_rows %}
+          <tr>
+            {% for v in r.values %}
+              <td>{{ v }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ confirm_form.as_p }}
+    <div class="form-check mb-3">
+      {{ confirm_form.replace_existing }} {{ confirm_form.replace_existing.label_tag }}
+    </div>
+    <button class="btn btn-primary">Confirmar importação</button>
+    <a class="btn btn-secondary" href="{% url 'paf:paf-index' %}">Cancelar</a>
+  </form>
+
+{% endblock %}

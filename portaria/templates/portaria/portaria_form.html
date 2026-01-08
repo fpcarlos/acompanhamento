@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Nova Portaria{% endblock %}
+
+{% block content %}
+<h1>Nova Portaria de Fiscalização</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="mb-3">
+    {{ form.tipo_fiscalizacao.label_tag }}
+    {{ form.tipo_fiscalizacao }}
+    {{ form.tipo_fiscalizacao.errors }}
+  </div>
+  <div class="mb-3">
+    {{ form.tipo_portaria.label_tag }}
+    {{ form.tipo_portaria }}
+    {{ form.tipo_portaria.errors }}
+  </div>
+  <div class="mb-3">
+    {{ form.numero_processo_sei.label_tag }}
+    {{ form.numero_processo_sei }}
+    {{ form.numero_processo_sei.errors }}
+  </div>
+  <div class="mb-3">
+    {{ form.ano_processo_sei.label_tag }}
+    {{ form.ano_processo_sei }}
+    {{ form.ano_processo_sei.errors }}
+  </div>
+  <div class="mb-3">
+    {{ form.objetivo.label_tag }}
+    {{ form.objetivo }}
+    {{ form.objetivo.errors }}
+  </div>
+  <div class="mb-3">
+    {{ form.deliberacao.label_tag }}
+    {{ form.deliberacao }}
+    {{ form.deliberacao.errors }}
+  </div>
+  <div class="mb-3">
+    {{ form.portaria_revogada.label_tag }}
+    {{ form.portaria_revogada }}
+    {{ form.portaria_revogada.errors }}
+  </div>
+  <div class="mb-3">
+    {{ form.entidades.label_tag }}
+    {{ form.entidades }}
+    {{ form.entidades.errors }}
+  </div>
+  <button class="btn btn-primary" type="submit">Salvar</button>
+  <a class="btn btn-secondary" href="{% url 'portaria:portaria-list' %}">Cancelar</a>
+</form>
+
+{% endblock %}

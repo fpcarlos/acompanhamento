@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Portarias de Fiscalização{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>Portarias de Fiscalização</h1>
+  <a class="btn btn-primary" href="{% url 'portaria:portaria-create' %}">Nova Portaria</a>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Número</th>
+      <th>Tipo Fiscalização</th>
+      <th>Tipo Portaria</th>
+      <th>Status</th>
+      <th>Criada em</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in portarias %}
+      <tr>
+        <td><a href="{% url 'portaria:portaria-detail' p.pk %}">{{ p.numero_portaria }}</a></td>
+        <td>{{ p.tipo_fiscalizacao }}</td>
+        <td>{{ p.tipo_portaria }}</td>
+        <td>{{ p.status_portaria }}</td>
+        <td>{{ p.data_criacao }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">Nenhuma portaria encontrada.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if is_paginated %}
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+      {% endif %}
+      <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Próxima</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
+
+{% endblock %}
