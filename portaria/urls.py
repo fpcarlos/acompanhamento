@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.PortariaListView.as_view(), name='portaria-list'),
     path('nova/', views.PortariaCreateView.as_view(), name='portaria-create'),
     path('<int:pk>/', views.PortariaDetailView.as_view(), name='portaria-detail'),
+    path('entidades/search/', views.entidade_search, name='entidade-search'),
 ]

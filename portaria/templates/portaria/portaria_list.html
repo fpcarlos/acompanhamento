@@ -8,6 +8,47 @@
   <a class="btn btn-primary" href="{% url 'portaria:portaria-create' %}">Nova Portaria</a>
 </div>
 
+<form method="get" class="mb-3">
+  <div class="row g-2">
+    <div class="col-md-4">
+      <input type="search" class="form-control" name="q" placeholder="Buscar por número, objetivo, processo, entidade..." value="{{ request.GET.q|default_if_none:'' }}">
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" name="tipo_fiscalizacao">
+        <option value="">Tipo fiscalização</option>
+        {% for tf in tipo_fiscalizacoes %}
+          <option value="{{ tf.pk }}" {% if request.GET.tipo_fiscalizacao == tf.pk|stringformat:'s' %}selected{% endif %}>{{ tf.nome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" name="tipo_portaria">
+        <option value="">Tipo portaria</option>
+        {% for tp in tipo_portarias %}
+          <option value="{{ tp.pk }}" {% if request.GET.tipo_portaria == tp.pk|stringformat:'s' %}selected{% endif %}>{{ tp.nome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" name="status">
+        <option value="">Status</option>
+        {% for s in status_portarias %}
+          <option value="{{ s.pk }}" {% if request.GET.status == s.pk|stringformat:'s' %}selected{% endif %}>{{ s.nome_status }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2 d-flex">
+      <select class="form-select me-2" name="entidade">
+        <option value="">Entidade</option>
+        {% for e in entidades_list %}
+          <option value="{{ e.pk }}" {% if request.GET.entidade == e.pk|stringformat:'s' %}selected{% endif %}>{{ e }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-outline-secondary" type="submit">Filtrar</button>
+    </div>
+  </div>
+</form>
+
 <table class="table table-striped">
   <thead>
     <tr>

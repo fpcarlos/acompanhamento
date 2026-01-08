@@ -53,3 +53,35 @@
 </form>
 
 {% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <!-- Select2 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script>
+    (function(){
+      // Initialize Select2 on entidades field
+      const $select = $('select[name="entidades"]');
+      if ($select.length) {
+        $select.select2({
+          placeholder: 'Selecione entidades...',
+          allowClear: true,
+          ajax: {
+            url: '{% url "portaria:entidade-search" %}',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+              return { q: params.term, page: params.page || 1 };
+            },
+            processResults: function (data, params) {
+              params.page = params.page || 1;
+              return { results: data.results, pagination: data.pagination };
+            },
+          },
+          minimumInputLength: 0,
+        });
+      }
+    })();
+  </script>
+{% endblock %}
