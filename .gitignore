@@ -6,6 +6,10 @@ __pycache__/
 # Virtual env
 .venv/
 
+# Environment / secrets
+.env
+.env.*
+
 # Django
 db.sqlite3
 media/
