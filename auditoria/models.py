@@ -11,9 +11,9 @@ class Audit(models.Model):
 
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open', db_index=True)
     created_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -30,9 +30,9 @@ class Finding(models.Model):
     audit = models.ForeignKey(Audit, on_delete=models.CASCADE, related_name='findings')
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    severity = models.CharField(max_length=10, choices=SEVERITY, default='medium')
-    resolved = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    severity = models.CharField(max_length=10, choices=SEVERITY, default='medium', db_index=True)
+    resolved = models.BooleanField(default=False, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
     def __str__(self):
         return f"{self.title} [{self.severity}]"
